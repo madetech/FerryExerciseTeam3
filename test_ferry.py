@@ -41,9 +41,19 @@ def test_errors_for_valid_config(client,corn,geese,price,error):
                     'market_side': {'corn': 0, 'geese': 0},
                 },
                 {
+                    'farm_side': {'corn': 2, 'geese': 0},
+                    'in_transit': {'corn': 0, 'geese': 0},
+                    'market_side': {'corn': 1, 'geese': 0},
+                },
+                {
                     'farm_side': {'corn': 1, 'geese': 0},
                     'in_transit': {'corn': 1, 'geese': 0},
                     'market_side': {'corn': 1, 'geese': 0},
+                },
+                {
+                    'farm_side': {'corn': 1, 'geese': 0},
+                    'in_transit': {'corn': 0, 'geese': 0},
+                    'market_side': {'corn': 2, 'geese': 0},
                 },
                 {
                     'farm_side': {'corn': 0, 'geese': 0},
@@ -59,6 +69,11 @@ def test_errors_for_valid_config(client,corn,geese,price,error):
                     'farm_side': {'corn': 1, 'geese': 0},
                     'in_transit': {'corn': 1, 'geese': 0},
                     'market_side': {'corn': 0, 'geese': 0},
+                },
+                {
+                    'farm_side': {'corn': 1, 'geese': 0},
+                    'in_transit': {'corn': 0, 'geese': 0},
+                    'market_side': {'corn': 1, 'geese': 0},
                 },
                 {
                     'farm_side': {'corn': 0, 'geese': 0},

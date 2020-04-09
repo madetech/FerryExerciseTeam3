@@ -1,3 +1,5 @@
+import itertools
+
 from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
@@ -19,14 +21,28 @@ def hello():
     return render_template('index.html', title='Home')
 
 def construct_itinerary(corn, geese):
-    return [
-        {
-            'farm_side': {'corn': (corn - 1) - c, 'geese': 0},
-            'in_transit': {'corn': 1, 'geese': 0},
-            'market_side': {'corn': c, 'geese': 0},
-        }
+    return list(itertools.chain(*[
+        [
+            {
+                'farm_side': {'corn': (corn - 1) - c, 'geese': 0},
+                'in_transit': {'corn': 1, 'geese': 0},
+                'market_side': {'corn': c, 'geese': 0},
+            },
+            {
+                'farm_side': {'corn': (corn - 1) - c, 'geese': 0},
+                'in_transit': {'corn': 0, 'geese': 0},
+                'market_side': {'corn': c + 1, 'geese': 0},
+            }
+        ]
+        if c != (corn - 1) else [
+            {
+                'farm_side': {'corn': (corn - 1) - c, 'geese': 0},
+                'in_transit': {'corn': 1, 'geese': 0},
+                'market_side': {'corn': c, 'geese': 0},
+            }
+        ]
         for c in range(corn)
-    ]
+    ]))
 
 
 @app.route('/_add_numbers')
