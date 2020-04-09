@@ -1,7 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
-
 
 class Ferry(object):
 
@@ -16,5 +15,10 @@ def main():
 def hello():
     return render_template('index.html', title='Home')
 
+@app.route('/_add_numbers')
+def add_numbers():
+    corn = request.args.get('corn', 0, type=int)
+    price = request.args.get('price', 0, type=float)
+    return jsonify(result=corn*price,price=(corn*price))
 if __name__ == '__main__':
     main()

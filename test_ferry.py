@@ -1,19 +1,17 @@
+import os
 import pytest
 
-from .ferry import Ferry
+
+from .ferry import Ferry, app
 
 @pytest.fixture
-def ferry():
-    price = 25
-    load = 1
-    return Ferry(load, price)
+def client():
+    app.config['TESTING'] = True
+
+    with app.test_client() as client:
+        yield client
 
 
-def test_can_create_ferry(ferry):
-    print(ferry)
-
-def test_ferry_has_load(ferry):
-    ferry.load
-
-def test_ferry_has_price():
-    ferry.price
+def test_calculate_trip_price_of_geese(client):
+    rv = client.get('/_add_numbers?corn=1&price=0.25')
+    assert rv.json['price'] == 0.25
