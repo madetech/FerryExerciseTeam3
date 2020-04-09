@@ -1,6 +1,8 @@
 import os
 import pytest
 
+from pprint import pformat
+import dictdiffer
 
 from .ferry import app
 
@@ -27,6 +29,7 @@ def test_errors_for_valid_config(client,corn,geese,price,error):
     rv = client.get("/_add_numbers?corn={}&geese={}&price={}".format(corn,geese,price))
     assert rv.json["error"] == error
 
+
 @pytest.mark.parametrize(
     'corn,expected_response', [
         [
@@ -48,6 +51,21 @@ def test_errors_for_valid_config(client,corn,geese,price,error):
                     'market_side': {'corn': 2, 'geese': 0},
                 }
             ]
+        ],
+        [
+            2,
+            [
+                {
+                    'farm_side': {'corn': 1, 'geese': 0},
+                    'in_transit': {'corn': 1, 'geese': 0},
+                    'market_side': {'corn': 0, 'geese': 0},
+                },
+                {
+                    'farm_side': {'corn': 0, 'geese': 0},
+                    'in_transit': {'corn': 1, 'geese': 0},
+                    'market_side': {'corn': 1, 'geese': 0},
+                }
+            ]
         ]
     ]
 )
@@ -55,8 +73,14 @@ def test_get_configuration(client, corn, expected_response):
     geese = 0
     price = 0.25
     rv = client.get("/_add_numbers?corn={}&geese={}&price={}".format(corn,geese,price))
-    assert isinstance(rv.json['itinerary'], list)
-    assert rv.json['itinerary'] == expected_response
+    assert isinstance(rv.json['itinerary'], list), pformat(
+        list(dictdiffer.diff(rv.json["error"], expected_response))
+    )
+
+    assert rv.json['itinerary'] == expected_response, pformat(
+        list(dictdiffer.diff(rv.json["error"], expected_response))
+    )
+
     #  [
         #  {
             #  'farm_side': {'corn': 2, 'geese': 0},

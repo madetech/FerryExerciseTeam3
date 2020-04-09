@@ -21,20 +21,11 @@ def hello():
 def construct_itinerary(corn, geese):
     return [
         {
-            'farm_side': {'corn': 2, 'geese': 0},
+            'farm_side': {'corn': (corn - 1) - c, 'geese': 0},
             'in_transit': {'corn': 1, 'geese': 0},
-            'market_side': {'corn': 0, 'geese': 0},
-        },
-        {
-            'farm_side': {'corn': 1, 'geese': 0},
-            'in_transit': {'corn': 1, 'geese': 0},
-            'market_side': {'corn': 1, 'geese': 0},
-        },
-        {
-            'farm_side': {'corn': 0, 'geese': 0},
-            'in_transit': {'corn': 1, 'geese': 0},
-            'market_side': {'corn': 2, 'geese': 0},
+            'market_side': {'corn': c, 'geese': 0},
         }
+        for c in range(corn)
     ]
 
 
