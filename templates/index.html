@@ -34,6 +34,18 @@
             <p>
             Price for total trips: <span id=result></span>
             </p>
+            <h2> My Itinerary: </h2>
+            <table id="results-table" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Farm</th>
+                        <th scope="col">Ferry</th>
+                        <th scope="col">Market</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
         </div>
     </div>
 <a href=# class="btn btn-primary" style="padding-top:10px" id=calculate>calculate my trip</a>
@@ -56,6 +68,27 @@
           }else{
               $("#error_block").attr("hidden",true);
               $("#result").text(data.price);
+              data.itinerary.forEach(
+                  function(row, index){
+                      $('#results-table tbody').append(`
+                          <tr>
+                              <td>${index}</td>
+                              <td>
+                                corn: ${row.farm_side.corn}
+                                geese: ${row.farm_side.geese}
+                                </td>
+                              <td>
+                                corn: ${row.in_transit.corn}
+                                geese: ${row.in_transit.geese}
+                              </td>
+                              <td>
+                                corn: ${row.market_side.corn}
+                                geese: ${row.market_side.geese}
+                              </td>
+                          </tr>
+                      `);
+                  }
+              )
           }
       });
       return false;
