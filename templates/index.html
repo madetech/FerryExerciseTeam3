@@ -1,0 +1,65 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<html>
+<div class="container">
+     <h1 class="text-center" >Ferry Friend</h1>
+    <div class="row">
+        <div class="col-md-5" style="border-right:1px solid lightgray">
+            <h2>I have: </h2>
+            <div class="input-group ">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Corns</span>
+                </div>
+                <input type="number" min="0" name="corn" class="form-control" placeholder="0" aria-label="Corn">
+            </div>
+            <div class="input-group" style="padding-top:5px;padding-bottom:5px">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Geese</span>
+                </div>
+                <input type="number"  min="0" name="geese" class="form-control" placeholder="0" aria-label="Geese">
+            </div>
+             <div class="input-group " >
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Ferry Cost</span>
+                </div>
+                <input type="number" min="0" name="price" class="form-control" value=0.25 aria-label="Chickens">
+            </div>
+        </div>
+        <div class="col-md-5">
+           <h2> My Results:</h2>
+            <p>
+            Price for total trips: <span id=result></span>
+            </p>
+        </div>
+    </div>
+<a href=# class="btn btn-primary" style="padding-top:10px" id=calculate>calculate my trip</a>
+<div class="alert alert-danger" id="error_block" hidden style="padding-top:5px"><span id="error_message"></span></div>
+</div>
+</html>
+
+<script type=text/javascript>
+  $(function() {
+    $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/_add_numbers', {
+          corn: $('input[name="corn"]').val(),
+          geese: $('input[name="geese"]').val(),
+          price: $('input[name="price"]').val()
+      }, function(data) {
+          if (data.error === 1){
+            $("#error_message").text(data.error_message);
+            $("#error_block").removeAttr("hidden");
+            $("#result").text("");
+          }else{
+              $("#error_block").attr("hidden");
+              $("#result").text(data.price);
+          }
+
+      });
+      return false;
+    });
+  });
+</script>
