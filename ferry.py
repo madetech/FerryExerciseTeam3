@@ -10,6 +10,12 @@ class Ferry(object):
 
 def main():
     app.run()
+RULES = [
+    lambda hunted,hunter : hunted > 0 and hunter == 0,
+    lambda hunted,hunter: hunted <= 2 and hunter == 1,
+    lambda hunted,hunter: hunted < 2 and hunter == 2,
+    lambda hunted,hunter: hunted == 0 and hunter > 2,
+    ]
 
 @app.route('/')
 def hello():
@@ -21,14 +27,31 @@ def add_numbers():
     geese = request.args.get('geese', 0, type=int)
     price = request.args.get('price', 0, type=float)
 
+    total_price = (((corn+geese)*2)-1) * price
     if corn < 0 or geese <0 :
         return jsonify(error=1,error_message="Only positive geese and corn pls")
-    if corn > 0 and geese > 2 :
-        return jsonify(error=1,error_message="Too many geese to make this trip possible with the corn!")
-    if corn > 2 and geese > 0 :
-        return jsonify(error=1,error_message="Too much corn to make this trip possible with the goose!")
+    if is_valid(corn,geese):
+        return jsonify(error=0,price=total_price)
+    return jsonify(error=1, error_message="Trip not possible")
 
-    return jsonify(error=0,price=(corn*price))
+
+def is_valid(corn,geese):
+     for rule in RULES:
+        if rule(corn,geese):
+            return True
 
 if __name__ == '__main__':
     main()
+
+''' 
+works:
+c > 0 and g = 0      
+c <= 2 and g = 1
+c < 2 and g = 2
+c = 0 and g > 2
+
+
+c = 1  and g = 1 and fox = 1
+c = 2  and g = 1 and fox = 1
+
+'''

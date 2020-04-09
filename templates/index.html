@@ -54,10 +54,9 @@
             $("#error_block").removeAttr("hidden");
             $("#result").text("");
           }else{
-              $("#error_block").attr("hidden");
+              $("#error_block").attr("hidden",true);
               $("#result").text(data.price);
           }
-
       });
       return false;
     });

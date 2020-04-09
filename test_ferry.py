@@ -13,8 +13,8 @@ def client():
 
 
 def test_calculate_trip_price_of_geese(client):
-    rv = client.get('/_add_numbers?corn=1&price=0.25')
-    assert rv.json['price'] == 0.25
+    rv = client.get('/_add_numbers?corn=2&price=0.25')
+    assert rv.json['price'] == 0.75
 
 @pytest.mark.parametrize("corn,geese,price,error",[
     [5,0,0.25,0],
